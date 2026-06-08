@@ -24,6 +24,7 @@ using osuTK.Graphics;
 using osu.Game.Localisation;
 using osu.Game.Resources.Localisation.Web;
 using osu.Game.Utils;
+using osu.Game.Beatmaps.Drawables;
 
 namespace osu.Game.Screens.Play
 {
@@ -67,6 +68,11 @@ namespace osu.Game.Screens.Play
 
         private TextFlowContainer playInfoText = null!;
 
+        private TextFlowContainer beatmapInfoText = null!;
+
+        private StarRatingDisplay beatmapInfoStarDisplay = null!;
+        private OsuSpriteText beatmapInfoDifficultyText = null!;
+
         [Resolved]
         private GlobalActionContainer globalAction { get; set; } = null!;
 
@@ -85,6 +91,39 @@ namespace osu.Game.Screens.Play
                     RelativeSizeAxes = Axes.Both,
                     Colour = Color4.Black,
                     Alpha = background_alpha,
+                },
+                new FillFlowContainer
+                {
+                    Origin = Anchor.TopRight,
+                    Anchor = Anchor.TopRight,
+                    Direction = FillDirection.Vertical,
+                    AutoSizeAxes = Axes.Both,
+                    Padding = new MarginPadding {Top = 10, Right = 10},
+                    Children = new Drawable[]
+                    {
+                        beatmapInfoText = new OsuTextFlowContainer(cp => cp.Font = OsuFont.GetFont(size: 18))
+                        {
+                            Origin = Anchor.TopRight,
+                            Anchor = Anchor.TopRight,
+                            TextAnchor = Anchor.TopRight,
+                            AutoSizeAxes = Axes.Both,
+                        },
+                        new FillFlowContainer
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Direction = FillDirection.Horizontal,
+                            Spacing = new Vector2(0, 50),
+                            Anchor = Anchor.TopRight,
+                            Origin = Anchor.TopRight,
+                            Children = new Drawable[]
+                            {
+                                beatmapInfoStarDisplay = new StarRatingDisplay(default),
+                                beatmapInfoDifficultyText = new OsuSpriteText()
+
+                            }
+                        }
+                    }
                 },
                 new FillFlowContainer
                 {
@@ -142,6 +181,7 @@ namespace osu.Game.Screens.Play
             State.ValueChanged += _ => InternalButtons.Deselect();
 
             updateInfoText();
+            updateBeatmapInfo();
         }
 
         private int retries;
@@ -243,6 +283,24 @@ namespace osu.Game.Screens.Play
             }
         }
 
+        private void updateBeatmapInfo()
+        {
+            beatmapInfoText.Clear();
+            beatmapInfoStarDisplay.Hide();
+            if (gameplayState != null)
+            {
+                beatmapInfoText.AddText(new RomanisableString(gameplayState!.Beatmap.Metadata.TitleUnicode, gameplayState!.Beatmap.Metadata.Title), cp => cp.Font = cp.Font.With(size: 22, weight: FontWeight.Bold));
+                beatmapInfoText.NewLine();
+                beatmapInfoText.AddText(new RomanisableString(gameplayState!.Beatmap.Metadata.ArtistUnicode, gameplayState!.Beatmap.Metadata.Artist));
+                beatmapInfoText.NewLine();
+                beatmapInfoText.AddText(BeatmapsetsStrings.ShowDetailsMappedBy(gameplayState!.Beatmap.Metadata.Author.Username));
+                beatmapInfoText.NewLine();
+
+                beatmapInfoDifficultyText.Text = gameplayState!.Beatmap.BeatmapInfo.DifficultyName;
+                beatmapInfoStarDisplay.Current.Value = new StarDifficulty(gameplayState!.Beatmap.BeatmapInfo.StarRating, 0);
+                beatmapInfoStarDisplay.Show();
+            }
+        }
         private int? getSongProgress()
         {
             if (gameplayClock == null || gameplayState == null)
