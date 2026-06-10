@@ -42,6 +42,7 @@ using osu.Game.Screens.OnlinePlay.Multiplayer;
 using osu.Game.Screens.OnlinePlay.Playlists;
 using osu.Game.Screens.Select;
 using osu.Game.Seasonal;
+using osu.Game.Skinning;
 using osuTK;
 using osuTK.Graphics;
 
@@ -68,6 +69,8 @@ namespace osu.Game.Screens.Menu
         [Resolved]
         private GameHost host { get; set; }
 
+        [Resolved]
+        private SkinManager skins { get; set; }
         [Resolved]
         private INotificationOverlay notifications { get; set; }
 
@@ -483,7 +486,14 @@ namespace osu.Game.Screens.Menu
         {
         }
 
-        private void loadSongSelect() => this.Push(new SoloSongSelect());
+        private void loadSongSelect()
+        {
+            if (skins.CurrentSkin.Value is LegacySkin)
+            {
+                this.Push(new SoloClassicSongSelect());
+            }
+            else { this.Push(new SoloSongSelect()); }
+        }
 
         private void loadQuickPlay() => this.Push(new OnlinePlay.Matchmaking.Intro.ScreenIntro(MatchmakingPoolType.QuickPlay));
 

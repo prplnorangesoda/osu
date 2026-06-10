@@ -232,7 +232,7 @@ namespace osu.Game.Screens.Footer
 
         public virtual void OnReleased(KeyBindingReleaseEvent<GlobalAction> e) { }
 
-        public void UpdateDisplay()
+        public virtual void UpdateDisplay()
         {
             Color4 backgroundColour = OverlayState.Value == Visibility.Visible ? buttonAccentColour : colourProvider.Background3;
             Color4 textColour = OverlayState.Value == Visibility.Visible ? colourProvider.Background6 : colourProvider.Content1;
