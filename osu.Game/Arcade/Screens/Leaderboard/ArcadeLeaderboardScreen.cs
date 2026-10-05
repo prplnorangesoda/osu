@@ -20,9 +20,9 @@ using osu.Game.Screens.OnlinePlay.Matchmaking.RankedPlay.Components;
 using osuTK;
 using osuTK.Graphics;
 
-namespace osu.Game.Arcade.Screens
+namespace osu.Game.Arcade.Screens.Leaderboard
 {
-    public class ArcadeLeaderboardScreen : OsuScreen
+    public partial class ArcadeLeaderboardScreen : OsuScreen
     {
         [Resolved]
         private ArcadeClient arcadeClient { get; set; } = null!;

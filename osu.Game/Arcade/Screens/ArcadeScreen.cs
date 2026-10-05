@@ -16,6 +16,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Input;
 using osu.Framework.Logging;
 using osu.Framework.Screens;
+using osu.Game.Arcade.Screens.Leaderboard;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
@@ -28,12 +29,16 @@ using osu.Game.Overlays;
 using osu.Game.Overlays.Login;
 using osu.Game.Screens;
 using osu.Game.Screens.Backgrounds;
+using osu.Game.Screens.OnlinePlay;
 using osuTK;
 using osuTK.Graphics;
 using QRCoder;
 
 namespace osu.Game.Arcade.Screens
 {
+    /// <summary>
+    /// User-facing login screen.
+    /// </summary>
     public partial class ArcadeScreen : OsuScreen
     {
         public override bool AllowUserExit => false;
@@ -504,7 +509,6 @@ namespace osu.Game.Arcade.Screens
                     Logger.Log($"[ARCADE] Retrieving user with code '{code}'...");
                     user = await arcadeClient.GetUserWithCode(code);
                     Logger.Log($"[ARCADE] Connecting as {user.User.Username}.");
-
                 }
                 else
                 {
@@ -533,6 +537,7 @@ namespace osu.Game.Arcade.Screens
                         ]
                     };
                 }
+
                 Logger.Log($"[ARCADE] Attempting connection as {user.User.Username}...");
                 arcadeClient.Connect(user).FireAndForget(() => Logger.Log("[ARCADE] Connected"), failLoginAttempt);
             }

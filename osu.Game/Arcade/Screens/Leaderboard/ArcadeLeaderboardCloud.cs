@@ -11,7 +11,7 @@ using osu.Framework.Graphics.Pooling;
 using osu.Framework.Utils;
 using osuTK;
 
-namespace osu.Game.Arcade.Screens
+namespace osu.Game.Arcade.Screens.Leaderboard
 {
     public class ArcadeLeaderboardCloud : CompositeDrawable
     {

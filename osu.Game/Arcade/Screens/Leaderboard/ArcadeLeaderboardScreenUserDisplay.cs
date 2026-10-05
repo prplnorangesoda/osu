@@ -13,7 +13,7 @@ using osu.Game.Screens.OnlinePlay.Matchmaking.RankedPlay.Components;
 using osu.Game.Users.Drawables;
 using osuTK;
 
-namespace osu.Game.Arcade.Screens
+namespace osu.Game.Arcade.Screens.Leaderboard
 {
     public class ArcadeLeaderboardScreenUserDisplay : CompositeDrawable
     {
