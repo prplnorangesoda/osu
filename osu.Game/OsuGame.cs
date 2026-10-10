@@ -34,6 +34,7 @@ using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Framework.Threading;
+using osu.Game.Arcade;
 using osu.Game.Beatmaps;
 using osu.Game.Collections;
 using osu.Game.Configuration;
@@ -101,6 +102,14 @@ namespace osu.Game
 #endif
 
         public static readonly bool ARCADE = bool.TryParse(Environment.GetEnvironmentVariable("OSU_ARCADE"), out bool arcade) && arcade;
+
+        public override EndpointConfiguration CreateEndpoints()
+        {
+            if (ARCADE)
+                return new ArcadeEndpointConfiguration();
+
+            return base.CreateEndpoints();
+        }
 
         /// <summary>
         /// The amount of global offset to apply when a left/right anchored overlay is displayed (ie. settings or notifications).
